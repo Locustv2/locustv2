@@ -3,12 +3,8 @@
 version: '3.3'
 
 services:
-  app:
-    build:
-      context: .
-      args:
-        env: ${ENVIRONMENT:-development}
-    image: gcr.io/${PROJECT-local}/${IMAGE:-app}:${TAG:-dev}
+  yii:
+    image: yiisoftware/yii2-php:7.4-apache
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
@@ -18,12 +14,43 @@ services:
       - 20080:80
     environment:
       PHP_ENABLE_XDEBUG: 1
+    depends_on:
+      - mysql
 
   mysql:
+    restart: on-failure
     image: mysql:5.7
     environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
       MYSQL_DATABASE: dev_db
       MYSQL_USER: dev_user
       MYSQL_PASSWORD: dev_pwd
     ports:
       - 3306:3306
+
+  composer:
+    restart: on-failure
+    image: yiisoftware/yii2-php:7.4-apache
+    command: ["composer", "install"]
+    volumes:
+      - ./:/app
+    depends_on:
+      - yii
+
+  init:
+    restart: on-failure
+    image: yiisoftware/yii2-php:7.4-apache
+    command: ["php", "init", "--env=${ENVIRONMENT}","--overwrite=All"]
+    volumes:
+      - ./:/app
+    depends_on:
+      - composer
+
+  migrate:
+    restart: on-failure
+    image: yiisoftware/yii2-php:7.4-apache
+    command: ["php", "yii", "migrate/up", "--interactive", "0"]
+    volumes:
+      - ./:/app
+    depends_on:
+      - init
