@@ -3,12 +3,10 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => strtr('mysql:unix_socket=/cloudsql/{dbConnection};dbname=app_db', [
-                '{dbConnection}' => getenv('CLOUD_SQL_CONNECTION_NAME', true)
-            ]),
-            'username' => getenv('CLOUD_SQL_USER', true),
-            'password' => getenv('CLOUD_SQL_PASSWORD', true),
-            'charset' => 'utf8mb4',
+            'dsn' => 'mysql:host=mysql;dbname=dev_db',
+            'username' => 'dev_user',
+            'password' => 'dev_pwd',
+            'charset' => 'utf8',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
