@@ -1,13 +1,14 @@
-# Development docker-compose file
+# docker-compose file
 
 version: '3.3'
 
 services:
   yii:
+    restart: always
     image: yiisoftware/yii2-php:7.4-apache
     volumes:
       # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - .tmp/composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ./:/app
     ports:
@@ -54,3 +55,21 @@ services:
       - ./:/app
     depends_on:
       - init
+
+  letsencrypt:
+    image: certbot/certbot
+    command:
+      - certonly
+      - -d
+      - locustv2.com
+      - --webroot
+      - -w
+      - /app/web
+      - --agree-tos
+      - -m
+      - yjoodhisty+locustv2@gmail.com
+    volumes:
+      - ./:/app
+      - .tmp/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - yii

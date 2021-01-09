@@ -1,0 +1,16 @@
+# ssl docker-compose file
+
+version: '3.3'
+
+services:
+  yii:
+    restart: always
+    image: yiisoftware/yii2-php:7.4-apache
+    command: >
+      bash -c "a2enmod ssl
+      && docker-php-entrypoint apache2-foreground"
+    volumes:
+      - ./vhost.conf:/etc/apache2/sites-enabled/000-default.conf
+    ports:
+      - 80:80
+      - 443:443
