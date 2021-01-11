@@ -75,6 +75,7 @@ services:
       - init
 
   nginx:
+    restart: always
     image: nginx:latest
     depends_on:
       - letsencrypt
