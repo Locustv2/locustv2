@@ -18,17 +18,6 @@ services:
     depends_on:
       - mysql
 
-  nginx:
-    image: nginx:latest
-    depends_on:
-      - yii
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - .tmp/letsencrypt:/letsencrypt
-
   mysql:
     restart: on-failure
     image: mysql:5.7
@@ -83,4 +72,15 @@ services:
       - ./:/app
       - .tmp/letsencrypt:/etc/letsencrypt
     depends_on:
-      - yii
+      - init
+
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - .tmp/letsencrypt:/letsencrypt
