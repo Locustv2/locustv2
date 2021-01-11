@@ -11,8 +11,8 @@ services:
       - .tmp/composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ./:/app
-    ports:
-      - 80:80
+    expose:
+     - 80
     environment:
       PHP_ENABLE_XDEBUG: 1
     depends_on:
@@ -61,7 +61,7 @@ services:
     command:
       - certonly
       - -d
-      - locustv2.com
+      - www.locustv2.com
       - --webroot
       - -w
       - /app/web
@@ -72,4 +72,16 @@ services:
       - ./:/app
       - .tmp/letsencrypt:/etc/letsencrypt
     depends_on:
-      - yii
+      - init
+
+  nginx:
+    restart: always
+    image: nginx:latest
+    depends_on:
+      - letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - .tmp/letsencrypt:/letsencrypt
