@@ -7,8 +7,8 @@ require __DIR__ . '/../config/yiistrap.php';
 $config = yii\helpers\ArrayHelper::merge(
     require __DIR__ . '/../config/main.php',
     require __DIR__ . '/../config/main-local.php',
-    require __DIR__ . '/../config/web.php',
-    require __DIR__ . '/../config/web-local.php'
+    require __DIR__ . '/../config/frontend.php',
+    require __DIR__ . '/../config/frontend-local.php'
 );
 
 (new yii\web\Application($config))->run();

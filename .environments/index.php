@@ -39,7 +39,7 @@ return [
             'yii',
         ],
         'setCookieValidationKey' => [
-            'config/web.php',
+            'config/frontend.php',
         ],
     ],
     'production' => [
@@ -52,7 +52,7 @@ return [
             'yii',
         ],
         'setCookieValidationKey' => [
-            'config/web.php',
+            'config/frontend.php',
         ],
     ],
 ];
