@@ -20,14 +20,13 @@ services:
 
   nginx:
     image: nginx:latest
-    volumes:
-      - ./nginx.ssl.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - yii
     ports:
       - "80:80"
       - "443:443"
     volumes:
+      - ./nginx.ssl.conf:/etc/nginx/nginx.conf:ro
       - .tmp/letsencrypt:/letsencrypt
 
   mysql:
