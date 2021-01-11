@@ -28,3 +28,4 @@ composer.phar
 /vendor
 
 .tmp
+/nginx.conf
