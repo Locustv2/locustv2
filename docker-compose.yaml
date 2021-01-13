@@ -61,7 +61,7 @@ services:
     command:
       - certonly
       - -d
-      - www.locustv2.com
+      - locustv2.com,www.locustv2.com
       - --webroot
       - -w
       - /app/web
